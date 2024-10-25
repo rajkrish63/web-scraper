@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Content Extractor</title>
+  <style>
+    :root {
+      --primary-color: #4CAF50;
+      --secondary-color: #f9f9f9;
+      --hover-color: #3e8e41;
+      --text-color: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+
+    label, input, select, textarea {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      text-align: left;
+    }
+
+    input[type="url"], select, textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--hover-color);
+    }
+
+    .textarea-container {
+      margin-top: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      height: 200px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      resize: vertical;
+      margin-top: 10px;
+    }
+
+    .download-section {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .download-link {
+      padding: 8px 15px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .download-link:hover {
+      background-color: var(--hover-color);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header Section -->
+    <h1>Web Content Extractor</h1>
+    <p>Enter a URL, select the content type, and view or download the extracted content.</p>
+
+    <!-- URL Input Section -->
+    <label for="urlInput">Website URL</label>
+    <input type="url" id="urlInput" placeholder="Enter the URL" required>
+
+    <!-- Content Type Selection -->
+    <label for="contentSelect">Select Content to Extract</label>
+    <select id="contentSelect">
+      <option value="html">HTML</option>
+      <option value="css">CSS</option>
+      <option value="js">JavaScript</option>
+      <option value="img">Images</option>
+      <option value="txt">Text</option>
+      <option value="video">Video</option>
+    </select>
+
+    <!-- Extract Button -->
+    <button onclick="extractContent()">Extract Content</button>
+
+    <!-- Display Extracted Content -->
+    <div class="textarea-container">
+      <label for="outputText">Extracted Content</label>
+      <textarea id="outputText" readonly placeholder="The extracted content will appear here..."></textarea>
+    </div>
+
+    <!-- Download Section -->
+    <div class="download-section" id="downloadSection">
+      <a href="#" download="extracted-content" id="downloadLink" class="download-link">Download Content</a>
+    </div>
+  </div>
+
+  <script>
+    async function extractContent() {
+      const url = document.getElementById('urlInput').value;
+      const contentType = document.getElementById('contentSelect').value;
+      const outputText = document.getElementById('outputText');
+      const downloadSection = document.getElementById('downloadSection');
+      const downloadLink = document.getElementById('downloadLink');
+
+      // Clear previous content
+      outputText.value = '';
+      downloadSection.style.display = 'none';
+
+      try {
+        // Fetch content (replace with actual scraping API or server code)
+        const response = await fetch('/scrape', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ url, contentType })
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch content: ${response.statusText}`);
+        }
+
+        // Get extracted content
+        const data = await response.text();
+
+        // Display content
+        outputText.value = data;
+
+        // Prepare download link with the content
+        const blob = new Blob([data], { type: 'text/plain' });
+        const urlBlob = URL.createObjectURL(blob);
+        downloadLink.href = urlBlob;
+        downloadLink.download = `extracted-${contentType}.txt`;
+        downloadSection.style.display = 'flex';
+
+      } catch (error) {
+        outputText.value = `Error occurred: ${error.message}`;
+      }
+    }
+  </script>
+
+</body>
+</html>
