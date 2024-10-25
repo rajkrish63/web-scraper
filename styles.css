@@ -1,0 +1,112 @@
+/* Root Variables for Theme */
+:root {
+  --primary-color: #4CAF50;
+  --secondary-color: #f0f0f0;
+  --hover-color: #45a049;
+}
+
+/* Body Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+/* Header and Buttons */
+button, a {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+button:hover, a:hover {
+  background-color: var(--hover-color);
+}
+
+/* Loading Animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.loading-icon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  animation: pulse 1s infinite;
+}
+
+/* Form Fields with Transition */
+input[type="text"], input[type="url"], select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="url"]:focus, select:focus {
+  box-shadow: 0 0 5px var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* Card Hover Effects */
+.card {
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  border-radius: 8px;
+  margin: 10px;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  transform: translateY(-5px);
+}
+
+/* Download Section with Flexbox */
+.download-section {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+.download-link {
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.download-link:hover {
+  background-color: var(--hover-color);
+}
+
+/* Interactive Cursors */
+.download-link {
+  cursor: pointer;
+}
+
+button, a {
+  cursor: pointer;
+}
